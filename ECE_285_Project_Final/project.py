@@ -14,12 +14,10 @@ import matplotlib.pyplot as plt
 
 class GramMatrix(nn.Module):
     def forward(self, input):
-        b, c, h, w = input.size()
-        F = input.view(b, c, h * w)
-        G = torch.bmm(F, F.transpose(1, 2))
-        G.div_(h * w)
-        return G
-
+        a, b, c, d = input.size()
+        features = input.view(a * b, c * d)
+        G = torch.mm(features, features.t())
+        return G.div(a * b * c * d)
 
 class StyleTransferNetwork(object):
     def __init__(self, content,  multi_styles):
